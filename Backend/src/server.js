@@ -3,10 +3,13 @@ const dotenv = require("dotenv");
 const path = require("path");
 dotenv.config();
 const connectDB = require('./lib/db.js');
+const authRoutes = require("./routes/auth.route.js")
 
 const app = express();
 
 const PORT = process.env.PORT || 8080;
+app.use(express.json());
+app.use('/api/auth', authRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../../Frontend/dist")));
