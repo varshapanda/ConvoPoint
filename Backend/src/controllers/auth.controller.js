@@ -117,33 +117,32 @@ const updateProfile = async (req, res) => {
       { new: true }
     ).select("-password");
 
-    res.status(200).json({message: "User updated successfully", updatedUser});
-  } catch(error){
+    res.status(200).json({ message: "User updated successfully", updatedUser });
+  } catch (error) {
     console.log("Error while updating profile", error);
-    return res.status(500).json({message: "Internal server error"});
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-const checkAuth = async(req, res)=>{
-  try{
-    if(!req.user){
-      return res.status(401).json({message: "Unauthorized user"});
+const checkAuth = async (req, res) => {
+  try {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized user" });
     }
     res.status(200).json({
       success: true,
       message: "User is authenticated",
-      user:{
+      user: {
         _id: req.user._id,
         fullName: req.user.fullName,
         email: req.user.email,
         profilePic: req.user.profilePic,
-      }
-    })
-  }
-  catch(error){
+      },
+    });
+  } catch (error) {
     console.error("Error in checkAuth controller", error);
-    return res.status(500).json({message: "Internal server error"});
+    return res.status(500).json({ message: "Internal server error" });
   }
-}
+};
 
-module.exports = { signup, login, logout, updateProfile, checkAuth};
+module.exports = { signup, login, logout, updateProfile, checkAuth };
