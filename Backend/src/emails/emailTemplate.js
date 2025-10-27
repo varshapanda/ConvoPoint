@@ -11,7 +11,7 @@ const escapeHtml = (str) =>
       }[char])
   );
 
-const createWelcomeEmailTemplate = (name, clientURL) => {
+export const createWelcomeEmailTemplate = (name, clientURL) => {
   const safeName = escapeHtml(name ?? "");
   const safeURL = escapeHtml(clientURL ?? "#");
   return `
@@ -65,4 +65,3 @@ const createWelcomeEmailTemplate = (name, clientURL) => {
   </html>
   `;
 };
-module.exports = createWelcomeEmailTemplate;

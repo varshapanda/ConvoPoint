@@ -1,7 +1,12 @@
-const express = require("express");
-const { getAllContacts, getMessagesByUserId, sendMessage, getChatPartners } = require("../controllers/message.controller.js");
-const authMiddleware = require("../middleware/auth.middleware.js");
-const { default: arcjetMiddleware } = require("../middleware/arcjet.middleware.mjs");
+import express from "express";
+import {
+  getAllContacts,
+  getMessagesByUserId,
+  sendMessage,
+  getChatPartners,
+} from "../controllers/message.controller.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
+import { arcjetMiddleware } from "../middleware/arcjet.middleware.js";
 const router = express.Router();
 
 router.use(arcjetMiddleware, authMiddleware);
@@ -11,4 +16,4 @@ router.get("/chats", getChatPartners);
 router.get("/:id", getMessagesByUserId);
 router.post("/send/:id", sendMessage);
 
-module.exports = router;
+export default router;

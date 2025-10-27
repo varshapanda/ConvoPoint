@@ -1,8 +1,8 @@
-const User = require("../models/User.js");
-const Message = require("../models/Message.js");
-const cloudinary = require("../lib/cloudinary.js");
+import User from "../models/User.js";
+import Message from "../models/Message.js";
+import cloudinary from "../lib/cloudinary.js";
 
-const getAllContacts = async (req, res) => {
+export const getAllContacts = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
     const filteredUsers = await User.find({
@@ -15,7 +15,7 @@ const getAllContacts = async (req, res) => {
   }
 };
 
-const getMessagesByUserId = async (req, res) => {
+export const getMessagesByUserId = async (req, res) => {
   try {
     const myId = req.user._id;
     const { id: userToChatId } = req.params;
@@ -29,27 +29,27 @@ const getMessagesByUserId = async (req, res) => {
     res.status(200).json(messages);
   } catch (err) {
     console.log("Error in getMessagesByUserId", err);
-    return res.status({ message: "Internal server error" });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
-const sendMessage = async (req, res) => {
+export const sendMessage = async (req, res) => {
   try {
     const { text, image } = req.body;
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
 
-    if(!text || !image){
-      return res.status(400).json({message: "Text or image is required"});
+    if (!text && !image) {
+      return res.status(400).json({ message: "Text or image is required" });
     }
-    if(senderId.equals(receiverId)){
-      return res.status(400).json({message: "Cannot send messages to yourself"});
-      
+    if (senderId.equals(receiverId)) {
+      return res
+        .status(400)
+        .json({ message: "Cannot send messages to yourself" });
     }
-    const receiverExists = await User.exists({_id: receiverId});
-    if(!receiverExists){
-      return res.status(404).json({message: "Receiver not found"});
-
+    const receiverExists = await User.exists({ _id: receiverId });
+    if (!receiverExists) {
+      return res.status(404).json({ message: "Receiver not found" });
     }
 
     let imgUrl;
@@ -76,7 +76,7 @@ const sendMessage = async (req, res) => {
   }
 };
 
-const getChatPartners = async (req, res) => {
+export const getChatPartners = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
 
@@ -94,17 +94,14 @@ const getChatPartners = async (req, res) => {
         )
       ),
     ];
-    const chatPartners = await User.find({_id: { $in: chatPartnerIds }}).select("-password");
-    res.status(200).json({ message: "All chats fetched successfully", chatPartners });
+    const chatPartners = await User.find({
+      _id: { $in: chatPartnerIds },
+    }).select("-password");
+    res
+      .status(200)
+      .json({ message: "All chats fetched successfully", chatPartners });
   } catch (err) {
     console.log("Error in getChatPartners controller", err.message);
     return res.status(500).json({ message: "Internal server error " });
   }
-};
-
-module.exports = {
-  getAllContacts,
-  getMessagesByUserId,
-  sendMessage,
-  getChatPartners,
 };
