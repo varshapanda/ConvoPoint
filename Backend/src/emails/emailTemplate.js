@@ -1,4 +1,19 @@
-const createWelcomeEmailTemplate=(name, clientURL) =>{
+const escapeHtml = (str) =>
+  String(str).replace(
+    /[&<>"']/g,
+    (char) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      }[char])
+  );
+
+const createWelcomeEmailTemplate = (name, clientURL) => {
+  const safeName = escapeHtml(name ?? "");
+  const safeURL = escapeHtml(clientURL ?? "#");
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -13,7 +28,7 @@ const createWelcomeEmailTemplate=(name, clientURL) =>{
       <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -0.5px;">Welcome to ConvoPoint!</h1>
     </div>
     <div style="background-color: #1a1a1a; padding: 40px 35px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.5); border: 1px solid #2d2d2d; border-top: none;">
-      <p style="font-size: 18px; color: #ffffff; font-weight: 600; margin-bottom: 8px;">Hello ${name},</p>
+      <p style="font-size: 18px; color: #ffffff; font-weight: 600; margin-bottom: 8px;">Hello ${safeName},</p>
       <p style="color: #b4b4b4; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">We're excited to have you join our messaging platform! ConvoPoint connects you with friends, family, and colleagues in real-time, no matter where they are.</p>
       
       <div style="background-color: #0d0d0d; padding: 28px 24px; border-radius: 8px; margin: 28px 0; border: 1px solid #2d2d2d;">
@@ -27,7 +42,7 @@ const createWelcomeEmailTemplate=(name, clientURL) =>{
       </div>
       
       <div style="text-align: center; margin: 32px 0;">
-        <a href=${clientURL} style="background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%); color: #0d0d0d; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-weight: 600; font-size: 15px; display: inline-block; box-shadow: 0 2px 12px rgba(255,255,255,0.2); transition: all 0.2s;">Open ConvoPoint</a>
+        <a href=${safeURL} target="_blank" rel="noopener noreferrer" style="background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%); color: #0d0d0d; text-decoration: none; padding: 14px 32px; border-radius: 6px; font-weight: 600; font-size: 15px; display: inline-block; box-shadow: 0 2px 12px rgba(255,255,255,0.2); transition: all 0.2s;">Open ConvoPoint</a>
       </div>
       
       <div style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #2d2d2d;">
@@ -49,5 +64,5 @@ const createWelcomeEmailTemplate=(name, clientURL) =>{
   </body>
   </html>
   `;
-}
+};
 module.exports = createWelcomeEmailTemplate;
