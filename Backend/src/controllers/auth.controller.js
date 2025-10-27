@@ -115,9 +115,9 @@ const updateProfile = async (req, res) => {
       userId,
       { profilePic: uploadResponse.secure_url },
       { new: true }
-    );
+    ).select("-password");
 
-    res.status(200).json({message: "User updated successfully"});
+    res.status(200).json({message: "User updated successfully", updatedUser});
   } catch(error){
     console.log("Error while updating profile", error);
     return res.status(500).json({message: "Internal server error"});
