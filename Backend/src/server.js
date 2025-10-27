@@ -1,7 +1,6 @@
 const express = require("express");
-const dotenv = require("dotenv");
+const cookieParser = require("cookie-parser");
 const path = require("path");
-dotenv.config();
 const connectDB = require('./lib/db.js');
 const authRoutes = require("./routes/auth.route.js");
 const ENV = require("./lib/env.js");
@@ -11,6 +10,8 @@ const app = express();
 
 const PORT = ENV.PORT || 8080;
 app.use(express.json());
+app.use(cookieParser());
+
 app.use('/api/auth', authRoutes);
 
 if (ENV.NODE_ENV === "production") {
