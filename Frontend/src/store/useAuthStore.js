@@ -38,8 +38,9 @@ export const useAuthStore = create((set) => ({
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
       toast.success("Logged in successfully");
-    } catch (err) {
-      toast.error(err.response.data.message);
+    } catch (error) {
+      const msg = error?.response?.data?.message || "Invalid Credentials";
+      toast.error(msg);
     } finally {
       set({ isLoggingIn: false });
     }
@@ -66,7 +67,8 @@ export const useAuthStore = create((set) => ({
     }
     catch(error){
       console.log("Error in update profile", error);
-      toast.error(error.response.data.message);
+      const msg = error?.response?.data?.message || "Failed to update profile";
+      toast.error(msg);
     }
   }
 
