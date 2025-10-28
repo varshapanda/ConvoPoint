@@ -7,7 +7,7 @@ import ActiveTabOptions from "../components/ActiveTabOptions";
 import ChatsList from "../components/ChatsList";
 import ContactList from "../components/ContactList";
 import ChatContainer from "../components/ChatContainer";
-import NoConversationPlaceholder from "../components/NoConversationPlaceholder";
+import NoConversation from "../components/NoConversation";
 
 function ChatPage() {
   // const { logout } = useAuthStore();
@@ -28,7 +28,7 @@ function ChatPage() {
 
         {/* Right Side */}
         <div className="flex-1 flex flex-col bg-black">
-        {selectedUser ? <ChatContainer/>: <NoConversationPlaceholder/>}
+        {selectedUser ? <ChatContainer/>: <NoConversation/>}
         </div>
       </AnimatedBorder>
     </div>
