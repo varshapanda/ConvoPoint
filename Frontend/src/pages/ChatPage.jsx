@@ -1,5 +1,5 @@
 import React from "react";
-import { useAuthStore } from "../store/useAuthStore";
+// import { useAuthStore } from "../store/useAuthStore";
 import AnimatedBorder from "../components/AnimatedBorder";
 import { useChatStore } from "../store/useChatStore";
 import ProfileHeader from "../components/ProfileHeader";
@@ -10,7 +10,7 @@ import ChatContainer from "../components/ChatContainer";
 import NoConversationPlaceholder from "../components/NoConversationPlaceholder";
 
 function ChatPage() {
-  const { logout } = useAuthStore();
+  // const { logout } = useAuthStore();
   const { activeTab, selectedUser } = useChatStore();
 
   return (
