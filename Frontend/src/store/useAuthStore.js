@@ -79,9 +79,8 @@ export const useAuthStore = create((set, get) => ({
   },
   connectSocket: () => {
     const { authUser } = get();
-    if (!authUser || get().socket?.connected) {
-      return;
-    }
+    const existing = get().socket;
+    if(!authUser || existing?.connected || existing?.active) return;
     // If user is authenticated, connect it
     const socket = io(BASE_URL, { withCredentials: true }); // ensures cokkies are sent with connection
     // call the connect method
