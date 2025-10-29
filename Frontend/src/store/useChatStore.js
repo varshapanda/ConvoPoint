@@ -78,6 +78,7 @@ export const useChatStore = create((set, get) => ({
     // Get access to the previous messages and add the latest message
     const { selectedUser, messages } = get();
     const {authUser} = useAuthStore.getState();
+    if(!selectedUser||!authUser) return;
     const dumId = `dum-${Date.now()}`
     const optimisedMessage = {
       _id: dumId,
