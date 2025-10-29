@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
 import ChatHeader from "./ChatHeader";
@@ -10,15 +10,20 @@ function ChatContainer() {
   const { selectedUser, messages, getMessagesByUserId, isMessagesLoading } =
     useChatStore();
   const { authUser } = useAuthStore();
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     getMessagesByUserId(selectedUser._id);
   }, [selectedUser, getMessagesByUserId]);
 
+  useEffect(()=>{
+    messagesEndRef.current?.scrollIntoView({behavior: "smooth"});
+  }, [messages])
+
   return (
-    <div>
+    <div className="flex flex-col h-full">
       <ChatHeader />
-      <div className="flex-1 px-6 overflow-y-auto py-8">
+      <div className="flex-1 overflow-y-auto px-6 py-8">
         {messages.length > 0 && !isMessagesLoading ? (
           <div className="max-w-3xl mx-auto space-y-6">
             {messages.map((message) => (
@@ -39,7 +44,7 @@ function ChatContainer() {
                     <img
                       src={message.image}
                       alt="Shared"
-                      className="rounded-lg h-48 object-cover"
+                      className="rounded-lg h-48 object-cover mb-2"
                     />
                   )}
                   {message.text && <p className="mt-2">{message.text}</p>}
@@ -53,6 +58,7 @@ function ChatContainer() {
                 </div>
               </div>
             ))}
+            <div ref={messagesEndRef} />
           </div>
         ) : isMessagesLoading ? (
           <MessagesLoading />
