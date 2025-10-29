@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
 import UsersLoading from "./UsersLoading";
 import NoChatsFound from "./NoChatsFound";
+import { useAuthStore } from "../store/useAuthStore";
 
 function ChatsList() {
   const { getMyChatPartners, chats, isUsersLoading, setSelectedUser } =
     useChatStore();
+  const { onlineUsers } = useAuthStore();  
 
   useEffect(() => {
     getMyChatPartners();
@@ -27,12 +29,21 @@ function ChatsList() {
         >
           <div className="flex items-center gap-3">
             {/* To make the online/offline work dynamically via socket */}
-            <div className={`avatar online`}>
+            <div
+              className={`avatar ${
+                onlineUsers.includes(chat._id) ? "online" : "offline"
+              }`}
+            >
               <div className="size-12 rounded-full">
-                <img src={chat.profilePic || "/profile.png"} alt={chat.fullName}/>
+                <img
+                  src={chat.profilePic || "/profile.png"}
+                  alt={chat.fullName}
+                />
               </div>
             </div>
-            <h4 className="text-gray-100 font-medium truncate">{chat.fullName}</h4>
+            <h4 className="text-gray-100 font-medium truncate">
+              {chat.fullName}
+            </h4>
           </div>
         </div>
       ))}
