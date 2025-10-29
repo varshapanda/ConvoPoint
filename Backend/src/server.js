@@ -9,13 +9,12 @@ import { ENV } from "./lib/env.js";
 
 import authRoutes from "./routes/auth.route.js";
 import messageRoutes from "./routes/message.route.js";
+import { app, server } from "./lib/socket.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 connectDB();
-const app = express();
-
 const PORT = ENV.PORT || 8080;
 app.use(express.json({limit:"15mb"}));
 app.use(cors({
@@ -35,6 +34,6 @@ if (ENV.NODE_ENV === "production") {
   });
 }
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
