@@ -6,6 +6,7 @@ import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
 import PageLoader from "./components/PageLoader";
 import {Toaster} from "react-hot-toast";
+import LandingPage from "./pages/LandingPage";
 
 export default function App() {
   const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
@@ -24,7 +25,8 @@ export default function App() {
       <div className="absolute bottom-0 -right-4 size-96 bg-white opacity-10 blur-[100px]" />
 
       <Routes>
-        <Route path="/" element={authUser? <ChatPage /> : <Navigate to={"/login"}/>}/>
+        <Route path="/" element={authUser ? <Navigate to="/chat" /> : <LandingPage/>} />
+        <Route path="/chat" element={authUser? <ChatPage /> : <Navigate to={"/signup"}/>}/>
         <Route path="/login" element={!authUser? <LoginPage />: <Navigate to={"/"}/>}/>
         <Route path="/signup" element={!authUser? <SignupPage />: <Navigate to={"/"}/>} />
       </Routes>
