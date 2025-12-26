@@ -8,7 +8,7 @@ ConvoPoint is a full-stack real-time chat application that enables users to comm
 
 ## Overview
 
-ConvoPoint is a scalable and modern chat platform developed without relying on external real-time or authentication services. It features a secure REST API, live message synchronization via Socket.io, and seamless media handling through Cloudinary. Upon registration, users receive an automated welcome email handled by a background service using Resend.
+ConvoPoint is a scalable and modern chat platform developed without relying on external real-time or authentication services. It features a secure REST API, live message synchronization via Socket.io, and seamless media handling through Cloudinary. Upon registration, users receive an automated welcome email handled by a background service using SendGrid.
 
 This project demonstrates production-grade patterns for building reliable real-time applications with a complete stack, optimized for performance and maintainability.
 
@@ -20,7 +20,7 @@ This project demonstrates production-grade patterns for building reliable real-t
 - **Real-Time Messaging** – Low-latency communication with Socket.io for instant chat delivery.  
 - **Online Presence Indicators** – Track active users and their connection status.  
 - **Image Uploads** – Upload and share images directly in the chat using Cloudinary.  
-- **Email Notifications (Testing Mode)** – Welcome email functionality via Resend (currently limited).  
+- **Email Notifications** – Automated welcome emails via SendGrid. 
 - **Rate Limiting** – Arcjet integration to prevent abuse and enhance API security.  
 - **Typing and Notification Sounds** – Audio feedback for message typing and delivery.  
 - **Modern UI/UX** – Responsive, accessible, and minimal frontend with Tailwind CSS and daisyUI.  
@@ -38,7 +38,7 @@ This project demonstrates production-grade patterns for building reliable real-t
 - JSON Web Tokens (JWT)  
 - REST APIs
 - Cloudinary  
-- Resend (Email Service)  
+- SendGrid (Email Service)  
 - Arcjet (Rate Limiting)  
 
 ### Frontend
@@ -64,7 +64,7 @@ CLIENT_URL=http://localhost:5173
 MONGODB_URL=your_mongodb_url
 JWT_SECRET=your_jwt_secret
 
-RESEND_API_KEY=your_resend_api_key
+SENDGRID_API_KEY=your_sendgrid_api_key
 EMAIL_FROM=your_email@example.com
 EMAIL_FROM_NAME=ConvoPoint
 
