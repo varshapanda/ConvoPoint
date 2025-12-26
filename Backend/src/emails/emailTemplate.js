@@ -23,10 +23,20 @@ export const createWelcomeEmailTemplate = (name, clientURL) => {
     <title>Welcome to ConvoPoint</title>
   </head>
   <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #ececec; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #0d0d0d;">
-    <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); padding: 40px 30px; text-align: center; border-radius: 8px 8px 0 0; border: 1px solid #2d2d2d; border-bottom: none;">
-      <img src="https://img.freepik.com/free-vector/hand-drawn-message-element-vector-cute-sticker_53876-118344.jpg?t=st=1741295028~exp=1741298628~hmac=0d076f885d7095f0b5bc8d34136cd6d64749455f8cb5f29a924281bafc11b96c&w=1480" alt="ConvoPoint Logo" style="width: 80px; height: 80px; margin-bottom: 20px; border-radius: 50%; background-color: white; padding: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);">
-      <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -0.5px;">Welcome to ConvoPoint!</h1>
-    </div>
+    <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 50px 30px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #2d2d2d;
+            border-bottom: none;">
+  <h1 style="color: #ffffff;
+             margin: 0;
+             font-size: 32px;
+             font-weight: 600;
+             letter-spacing: -0.5px;">
+    Welcome to ConvoPoint!
+  </h1>
+</div>
     <div style="background-color: #1a1a1a; padding: 40px 35px; border-radius: 0 0 8px 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.5); border: 1px solid #2d2d2d; border-top: none;">
       <p style="font-size: 18px; color: #ffffff; font-weight: 600; margin-bottom: 8px;">Hello ${safeName},</p>
       <p style="color: #b4b4b4; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">We're excited to have you join our messaging platform! ConvoPoint connects you with friends, family, and colleagues in real-time, no matter where they are.</p>
