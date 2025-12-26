@@ -1,16 +1,25 @@
-import { resendClient, sender } from "../lib/resend.js";
+import { sendgridClient, sender } from "../lib/sendgrid.js";
 import { createWelcomeEmailTemplate } from "./emailTemplate.js";
 
 export const sendWelcomeEmail = async (email, name, clientURL) => {
-  const { data, error } = await resendClient.emails.send({
-    from: `${sender.name} <${sender.email}>`,
+  const msg = {
     to: email,
+    from: {
+      email: sender.email,
+      name: sender.name,
+    },
     subject: "Welcome to ConvoPoint!",
     html: createWelcomeEmailTemplate(name, clientURL),
-  });
-  if (error) {
-    console.error("Error sending welcome email: ", error);
-    throw new error("Failed to send welcome email");
+  };
+
+  try {
+    await sendgridClient.send(msg);
+    console.log("Welcome Email sent successfully to:", email);
+  } catch (error) {
+    console.error("Error sending welcome email:", error);
+    if (error.response) {
+      console.error("SendGrid error details:", error.response.body);
+    }
+    throw new Error("Failed to send welcome email");
   }
-  console.log("Welcome Email sent successfully", data);
 };
