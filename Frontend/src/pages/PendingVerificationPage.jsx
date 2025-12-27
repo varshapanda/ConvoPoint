@@ -1,16 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AnimatedBorder from "../components/AnimatedBorder.jsx";
 import { MessageCircleIcon, LoaderIcon, Mail, RefreshCw } from "lucide-react";
 import { axiosInstance } from "../lib/axios";
 import toast from "react-hot-toast";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { useAuthStore } from "../store/useAuthStore";
 
 function PendingVerificationPage() {
   const location = useLocation();
+  const navigate = useNavigate();
   const email = location.state?.email || "";
   const [isResending, setIsResending] = useState(false);
   const [resendDisabled, setResendDisabled] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const { authUser, checkAuth } = useAuthStore();
+
+  // Check if user is already verified (redirect if they are)
+  useEffect(() => {
+    if (authUser?.isVerified) {
+      navigate("/chat", { replace: true });
+    }
+  }, [authUser, navigate]);
+
+  // Periodically check if user has been verified (every 3 seconds)
+  useEffect(() => {
+    const checkInterval = setInterval(async () => {
+      try {
+        // Silently check auth status
+        await checkAuth();
+      } catch {
+        // Ignore errors, user is still not verified
+      }
+    }, 3000); // Check every 3 seconds
+
+    return () => clearInterval(checkInterval);
+  }, [checkAuth]);
 
   const handleResendEmail = async () => {
     if (!email) {
@@ -20,13 +44,15 @@ function PendingVerificationPage() {
 
     setIsResending(true);
     try {
-      const res = await axiosInstance.post("/auth/resend-verification", { email });
+      const res = await axiosInstance.post("/auth/resend-verification", {
+        email,
+      });
       toast.success(res.data.message || "Verification email sent!");
-      
+
       // Disable resend button for 60 seconds
       setResendDisabled(true);
       setCountdown(60);
-      
+
       const timer = setInterval(() => {
         setCountdown((prev) => {
           if (prev <= 1) {
@@ -38,7 +64,8 @@ function PendingVerificationPage() {
         });
       }, 1000);
     } catch (error) {
-      const errorMsg = error?.response?.data?.message || "Failed to resend verification email";
+      const errorMsg =
+        error?.response?.data?.message || "Failed to resend verification email";
       toast.error(errorMsg);
     } finally {
       setIsResending(false);
@@ -58,7 +85,7 @@ function PendingVerificationPage() {
               <h2 className="text-3xl font-bold text-white mb-4">
                 Verify Your Email
               </h2>
-              
+
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-500/20 border border-blue-500/50 mb-6">
                 <Mail className="w-10 h-10 text-blue-500" />
               </div>
@@ -66,10 +93,8 @@ function PendingVerificationPage() {
               <p className="text-gray-400 text-lg mb-4">
                 We've sent a verification email to:
               </p>
-              
-              <p className="text-white font-semibold text-xl mb-8">
-                {email}
-              </p>
+
+              <p className="text-white font-semibold text-xl mb-8">{email}</p>
 
               <div className="bg-white/5 border border-white/10 rounded-lg p-6 mb-8 text-left">
                 <h3 className="text-white font-semibold mb-3">Next Steps:</h3>
@@ -109,6 +134,11 @@ function PendingVerificationPage() {
 
               <p className="text-gray-500 text-xs mt-8">
                 The verification link will expire in 24 hours.
+              </p>
+
+              <p className="text-gray-600 text-xs mt-4">
+                This page will automatically redirect once you verify your
+                email.
               </p>
             </div>
           </div>
