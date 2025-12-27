@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore.js";
 import AnimatedBorder from "../components/AnimatedBorder.jsx";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   MessageCircleIcon,
   LockIcon,
@@ -18,10 +18,14 @@ function LoginPage() {
     password: "",
   });
   const { login, isLoggingIn } = useAuthStore();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    login(formData);
+    const result = await login(formData);
+    if (result?.needsVerification) {
+      navigate("/pending-verification", { state: { email: formData.email } });
+    }
   };
 
   return (
@@ -39,7 +43,8 @@ function LoginPage() {
                     ConvoPoint
                   </h3>
                   <p className="text-gray-400 text-lg leading-relaxed">
-                    Continue your conversations where you left off. Your connections are waiting for you.
+                    Continue your conversations where you left off. Your
+                    connections are waiting for you.
                   </p>
                 </div>
 
@@ -53,7 +58,8 @@ function LoginPage() {
                         Your Connections
                       </h4>
                       <p className="text-gray-400 text-sm">
-                        Pick up right where you left off with your ongoing conversations
+                        Pick up right where you left off with your ongoing
+                        conversations
                       </p>
                     </div>
                   </div>
@@ -63,9 +69,12 @@ function LoginPage() {
                       <Clock className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <h4 className="text-white font-semibold mb-1">Always Available</h4>
+                      <h4 className="text-white font-semibold mb-1">
+                        Always Available
+                      </h4>
                       <p className="text-gray-400 text-sm">
-                        Access your messages anytime, anywhere with seamless sync
+                        Access your messages anytime, anywhere with seamless
+                        sync
                       </p>
                     </div>
                   </div>
@@ -79,7 +88,8 @@ function LoginPage() {
                         Stay Updated
                       </h4>
                       <p className="text-gray-400 text-sm">
-                        Never miss important messages with real-time notifications
+                        Never miss important messages with real-time
+                        notifications
                       </p>
                     </div>
                   </div>
@@ -170,7 +180,7 @@ function LoginPage() {
             </div>
           </div>
         </AnimatedBorder>
-      </div>
+      </div>a
     </div>
   );
 }

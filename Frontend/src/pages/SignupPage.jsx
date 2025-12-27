@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore.js";
 import AnimatedBorder from "../components/AnimatedBorder.jsx";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import {
   MessageCircleIcon,
   LockIcon,
@@ -20,10 +20,14 @@ function SignupPage() {
     password: "",
   });
   const { signup, isSigningup } = useAuthStore();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    signup(formData);
+    const result = await signup(formData);
+    if (result?.success) {
+      navigate("/pending-verification", { state: { email: formData.email } });
+    }
   };
 
   return (

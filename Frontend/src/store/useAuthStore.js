@@ -13,6 +13,11 @@ export const useAuthStore = create((set, get) => ({
   socket: null,
   onlineUsers: [],
 
+  // Add this function to manually set auth user
+  setAuthUser: (user) => {
+    set({ authUser: user });
+  },
+
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
@@ -30,15 +35,18 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningup: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data });
-      toast.success("Account created successfully");
-      get().connectSocket();
+      toast.success(
+        res.data.message || "Account created! Please check your email."
+      );
+      return { success: true };
     } catch (error) {
       toast.error(error.response.data.message);
+      return { success: false };
     } finally {
       set({ isSigningup: false });
     }
   },
+
   login: async (data) => {
     set({ isLoggingIn: true });
     try {
@@ -46,13 +54,23 @@ export const useAuthStore = create((set, get) => ({
       set({ authUser: res.data });
       toast.success("Logged in successfully");
       get().connectSocket();
+      return { success: true };
     } catch (error) {
       const msg = error?.response?.data?.message || "Invalid Credentials";
+      const isVerified = error?.response?.data?.isVerified;
+
+      if (isVerified === false) {
+        toast.error("Please verify your email before logging in");
+        return { success: false, needsVerification: true };
+      }
+
       toast.error(msg);
+      return { success: false };
     } finally {
       set({ isLoggingIn: false });
     }
   },
+
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
@@ -66,6 +84,7 @@ export const useAuthStore = create((set, get) => ({
       set({ isLoggingOut: false });
     }
   },
+
   updateProfile: async (data) => {
     try {
       const res = await axiosInstance.put("/auth/update-profile", data);
@@ -77,18 +96,19 @@ export const useAuthStore = create((set, get) => ({
       toast.error(msg);
     }
   },
+
   connectSocket: () => {
     const { authUser } = get();
     const existing = get().socket;
-    if(!authUser || existing?.connected || existing?.active) return;
-    // If user is authenticated, connect it
-    const socket = io(BASE_URL, { withCredentials: true }); // ensures cokkies are sent with connection
-    // call the connect method
+    if (!authUser || existing?.connected || existing?.active) return;
+
+    // Only connect if user is verified
+    if (!authUser.isVerified) return;
+
+    const socket = io(BASE_URL, { withCredentials: true });
     socket.connect();
-    // set the state
     set({ socket });
 
-    // listen for online users event
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
     });
