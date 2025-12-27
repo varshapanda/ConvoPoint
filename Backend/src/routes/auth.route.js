@@ -5,6 +5,8 @@ import {
   logout,
   updateProfile,
   checkAuth,
+  verifyEmail,
+  resendVerificationEmail,
 } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 import { arcjetMiddleware } from "../middleware/arcjet.middleware.js";
@@ -15,6 +17,8 @@ router.use(arcjetMiddleware);
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
+router.get("/verify-email/:token", verifyEmail);
+router.post("/resend-verification", resendVerificationEmail);
 router.put("/update-profile", authMiddleware, updateProfile);
 router.get("/check", authMiddleware, checkAuth);
 

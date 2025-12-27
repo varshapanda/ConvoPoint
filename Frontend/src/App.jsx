@@ -7,6 +7,8 @@ import { useEffect } from "react";
 import PageLoader from "./components/PageLoader";
 import {Toaster} from "react-hot-toast";
 import LandingPage from "./pages/LandingPage";
+import VerifyEmailPage from "./pages/VerifyEmailPage";
+import PendingVerificationPage from "./pages/PendingVerificationPage";
 
 export default function App() {
   const { checkAuth, isCheckingAuth, authUser } = useAuthStore();
@@ -29,6 +31,8 @@ export default function App() {
         <Route path="/chat" element={authUser? <ChatPage /> : <Navigate to={"/signup"}/>}/>
         <Route path="/login" element={!authUser? <LoginPage />: <Navigate to={"/"}/>}/>
         <Route path="/signup" element={!authUser? <SignupPage />: <Navigate to={"/"}/>} />
+        <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+        <Route path="/pending-verification" element={<PendingVerificationPage />} />
       </Routes>
       <Toaster/>
     </div>
