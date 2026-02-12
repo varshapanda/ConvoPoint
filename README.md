@@ -1,6 +1,6 @@
 # ConvoPoint
 
-**Live Demo**: https://convopoint-z2od3.sevalla.app
+**Live Demo**: https://convopoint.onrender.com
 
 ConvoPoint is a full-stack real-time chat application that enables users to communicate instantly with authentication, online status tracking, image sharing, and notification sounds. The system is designed with a custom-built authentication flow and socket server, ensuring full control and transparency across backend and frontend operations.
 
@@ -148,6 +148,37 @@ npm start
 
 
 ---
+
+## Deployment
+
+### Sevalla Deployment (Previous)
+
+- The app was initially deployed on **Sevalla** under a unified full-stack setup.  
+- Both frontend and backend were deployed together as a single Node.js service.  
+- The backend served the built frontend (`Frontend/dist`) using Express static middleware.  
+- Environment variables were configured via the Sevalla dashboard.  
+- `NODE_ENV` was set to **production** to enable static frontend serving.  
+- Proper CORS configuration was required to ensure frontend-backend communication worked correctly.  
+
+> ⚠️ This deployment is no longer active.
+
+---
+
+### Render Deployment (Current)
+
+- The application is now deployed on **Render** as a single Node.js Web Service.  
+- The backend serves the production-built frontend (`Frontend/dist`) in production mode.  
+- Deployment is configured from the **project root** using the following commands:
+
+#### Build Command
+```bash
+npm run build
+```
+
+#### Start Command
+```bash
+npm start
+```
 
 ## System Architecture
 
