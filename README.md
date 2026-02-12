@@ -149,6 +149,37 @@ npm start
 
 ---
 
+## Deployment
+
+### Sevalla Deployment (Previous)
+
+- The app was initially deployed on **Sevalla** under a unified full-stack setup.  
+- Both frontend and backend were deployed together as a single Node.js service.  
+- The backend served the built frontend (`Frontend/dist`) using Express static middleware.  
+- Environment variables were configured via the Sevalla dashboard.  
+- `NODE_ENV` was set to **production** to enable static frontend serving.  
+- Proper CORS configuration was required to ensure frontend-backend communication worked correctly.  
+
+> ⚠️ This deployment is no longer active.
+
+---
+
+### Render Deployment (Current)
+
+- The application is now deployed on **Render** as a single Node.js Web Service.  
+- The backend serves the production-built frontend (`Frontend/dist`) in production mode.  
+- Deployment is configured from the **project root** using the following commands:
+
+#### Build Command
+```bash
+npm run build
+```
+
+#### Start Command
+```bash
+npm start
+```
+
 ## System Architecture
 
 - The backend follows a layered architecture separating routes, controllers, and middleware for maintainability.  
